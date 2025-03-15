@@ -1,0 +1,22 @@
+// This file contains many-to-many relationships
+
+model Tag {
+  id        String    @id @default(uuid())
+  name      String    @unique
+  products  ProductTag[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@map("tags")
+}
+
+model ProductTag {
+  product   Product  @relation(fields: [productId], references: [id])
+  productId String
+  tag       Tag      @relation(fields: [tagId], references: [id])
+  tagId     String
+  createdAt DateTime @default(now())
+
+  @@id([productId, tagId])
+  @@map("product_tags")
+}

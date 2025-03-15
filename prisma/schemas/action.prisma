@@ -1,0 +1,25 @@
+enum ActionStatus {
+  PENDING
+  COMPLETED
+  FAILED
+}
+
+enum ActionType {
+  CREATE_ORDER
+  UPDATE_PRODUCT
+  DELETE_USER
+  SEND_NOTIFICATION
+}
+
+model Action {
+  id        String       @id @default(uuid())
+  type      ActionType
+  payload   Json
+  status    ActionStatus @default(PENDING)
+  userId    String?
+  user      User?        @relation(fields: [userId], references: [id])
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+
+  @@map("actions")
+}
